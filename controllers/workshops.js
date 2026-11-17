@@ -43,7 +43,11 @@ exports.getWorkshop = async (req, res, next) => {
   try {
     const workshop = await Workshop.findOne({ _id: req.params.id, isActive: true });
     if (!workshop) return res.status(404).json({ success: false, error: "Workshop not found" });
-    res.status(200).json({ success: true, data: workshop });
+    const registrationCount = await Registration.countDocuments({ workshop: workshop.id });
+    res.status(200).json({
+      success: true,
+      data: { ...workshop.toObject(), registrationCount },
+    });
   } catch (error) {
     next(error);
   }
