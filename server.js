@@ -135,7 +135,7 @@ const registrations = require("./routes/registrations");
 
 dotenv.config({ path: "./config/config.env" });
 
-if (process.env.MONGO_URI) {
+if (process.env.MONGODB_URI) {
   connectDB().catch((error) => {
     console.error(`Database connection failed: ${error.message}`);
     process.exit(1);

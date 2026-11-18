@@ -87,12 +87,12 @@ server.js        Application entry point
    npm ci
    ```
 
-2. Set `MONGO_URI` in `config/config.env` to your MongoDB connection string. It is intentionally blank initially. Set your own `JWT_SECRET` before deploying; the included value is generated for local development.
+2. Set `MONGODB_URI` in `config/config.env` to your MongoDB connection string. It is intentionally blank initially. Set your own `JWT_SECRET` before deploying; the included value is generated for local development.
 
    ```dotenv
    NODE_ENV=development
    PORT=5000
-   MONGO_URI=
+   MONGODB_URI=
    JWT_SECRET=<your-secret>
    JWT_EXPIRE=30d
    JWT_COOKIE_EXPIRE=30
@@ -105,7 +105,7 @@ server.js        Application entry point
    npm run dev
    ```
 
-The API runs on `http://localhost:5000` by default. Change `PORT` if another project already uses port 5000. With `MONGO_URI` blank, welcome, Swagger UI, and health endpoints work; database-backed APIs require a configured connection. Allow Mongoose to create the registration uniqueness index when connecting to a new database.
+The API runs on `http://localhost:5000` by default. Change `PORT` if another project already uses port 5000. With `MONGODB_URI` blank, welcome, Swagger UI, and health endpoints work; database-backed APIs require a configured connection. Allow Mongoose to create the registration uniqueness index when connecting to a new database.
 
 ## API Routes
 
