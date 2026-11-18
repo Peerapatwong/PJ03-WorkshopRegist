@@ -135,10 +135,12 @@ const registrations = require("./routes/registrations");
 
 dotenv.config({ path: "./config/config.env" });
 
+const isDirectRun = require.main === module;
+
 if (process.env.MONGODB_URI) {
   connectDB().catch((error) => {
     console.error(`Database connection failed: ${error.message}`);
-    process.exit(1);
+    if (isDirectRun) process.exit(1);
   });
 }
 
@@ -229,18 +231,21 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
-  console.log(`Workshop Registration API running on http://localhost:${PORT}`);
-});
 
-process.on("unhandledRejection", (error) => {
-  console.error(`Unhandled rejection: ${error.message}`);
-  server.close(() => process.exit(1));
-});
+if (isDirectRun) {
+  const server = app.listen(PORT, () => {
+    console.log(`Workshop Registration API running on http://localhost:${PORT}`);
+  });
 
-process.on("uncaughtException", (error) => {
-  console.error(`Uncaught exception: ${error.message}`);
-  process.exit(1);
-});
+  process.on("unhandledRejection", (error) => {
+    console.error(`Unhandled rejection: ${error.message}`);
+    server.close(() => process.exit(1));
+  });
 
-module.exports = { app, server };
+  process.on("uncaughtException", (error) => {
+    console.error(`Uncaught exception: ${error.message}`);
+    process.exit(1);
+  });
+}
+
+module.exports = app;
